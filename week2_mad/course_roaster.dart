@@ -1,6 +1,6 @@
 /// welcome message
 void printWelcome(String appName) {
-  print('=== $appName ===');
+  print(' $appName ');
 }
 
 String generateCode(String title) {
@@ -146,6 +146,31 @@ switch (enrollmentStatusCode) {
   String statusTag = isOpen ? 'OPEN' : 'FULL';
 
 print(statusTag);
+
+// for in loop
+
+for (var student in enrolledStudents) {
+  print(student);
+}
+
+// for each loop
+
+attendanceCount.forEach((key, value) {
+  print('$key: $value');
+});
+
+// if and for used both
+
+List<String> announcements = [
+  'Welcome to $courseTitle',
+  if (!isOpen) 'Course is FULL — waitlist open',
+  for (var student in waitlist)
+    'Reminder: $student, please confirm attendance',
+];
+
+for (var announcement in announcements) {
+  print(announcement);
+}
   
   
   

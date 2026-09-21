@@ -15,4 +15,5 @@ The project was created as part of the Week 2 Dart Fundamentals lab.
 * **Part 4:** Formatting Strings
 * **Part 5:** Operators in Action
 * **Part 6:** Enrollment Logic
+* **Part 7:** for in , for each and both if and for used
 

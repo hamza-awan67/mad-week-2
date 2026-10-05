@@ -67,6 +67,21 @@ class OrderLog {
   void add(String msg) => entries.add(msg);
 }
 
+class Order {
+  final int id;
+  int table;
+
+  Order(this.id, this.table)
+      : assert(table >= 1 && table <= 20);
+
+  String get label => 'Order #$id - Table $table';
+
+  set changeTable(int value) {
+    assert(value >= 1 && value <= 20);
+    table = value;
+  }
+}
+
 void main() {
   print('Seed: $seed (t=$t, u=$u)');
   step1();
@@ -143,25 +158,114 @@ void step4() {
 }
 
 void step5() {
+  Order order = Order(100 + u, 5 + u);
+
   print('--- Step 5 ---');
+  print('Step 5: order id=${order.id}, table=${order.table}');
 }
+
+// add getter
 
 void step6() {
+  Order order = Order(100 + u, 5 + u);
+
   print('--- Step 6 ---');
+  print('Step 6: ${order.label}');
 }
+
+// add setter
 
 void step7() {
+  Order order = Order(100 + u, 5 + u);
+
+  order.changeTable = 12;
+
   print('--- Step 7 ---');
+  print('Step 7: ${order.label}');
 }
+
+// create a list
 
 void step8() {
+  List<MenuItem> items = [];
+
+  for (int i = 0; i < menu.length; i++) {
+    items.add(MenuItem(menu[i], priceOf(i)));
+  }
+
   print('--- Step 8 ---');
+
+  for (MenuItem item in items) {
+    print('${item.name}: Rs ${item.price}');
+  }
 }
 
+// calculate bill
+
 void step9() {
+  MenuItem item1 = MenuItem(menu[u], priceOf(u));
+  MenuItem item2 = MenuItem(menu[(u + 1) % 10], priceOf((u + 1) % 10));
+
+  int subtotal = item1.price + item2.price;
+  int tax = (subtotal * taxPercent) ~/ 100;
+  int total = subtotal + tax;
+
   print('--- Step 9 ---');
+  print('${item1.name}: Rs ${item1.price}');
+  print('${item2.name}: Rs ${item2.price}');
+  print('Subtotal: Rs $subtotal');
+  print('Tax: Rs $tax');
+  print('Total: Rs $total');
 }
 
 void step10() {
+  int subtotal = 301;
+
+  int discount = (subtotal * couponPercent) ~/ 100;
+  int afterDiscount = subtotal - discount;
+
+  int tax = (afterDiscount * taxPercent) ~/ 100;
+  int total = afterDiscount + tax;
+
   print('--- Step 10 ---');
+  print('Subtotal: Rs $subtotal');
+  print('Coupon: $couponPercent%');
+  print('Discount: Rs $discount');
+  print('After discount: Rs $afterDiscount');
+  print('Tax: Rs $tax');
+  print('Final total: Rs $total');
 }
+
+// ==================== REFLECTION QUESTIONS ====================
+
+/* Q1. Animal(this.name, this.type); and the verbose constructor give the same result.
+ What does the shorthand save you?
+ Ans:  shorthand saves us from writing separate assignments for each field.
+ It makes the constructor shorter and easier to read.
+
+ Q2. When would you choose a named constructor, and when a factory constructor?
+ Ans: I would use a named constructor when I need different ways to create an object.
+ I would use a factory constructor when I need more control over object creation, such as
+ returning an existing object or choosing which object to create.
+
+ Q3. What is the difference between assigning a field in a constructor body and assigning it
+ in an initializer list?
+ Ans: An initializer list assigns fields before the constructor body runs and can initialize
+ final fields. A constructor body runs after the initial values have been set.
+
+ Q4. Give one reason to use a getter instead of storing the value in a field, and one reason
+ to use a setter instead of a public field.
+ Ans: A getter can calculate a value when it is accessed. A setter allows us to
+ control a value before changing it.*/
+
+
+
+
+
+
+
+
+
+
+
+

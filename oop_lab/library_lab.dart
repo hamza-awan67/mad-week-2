@@ -40,7 +40,7 @@ abstract class Borrowable {
   void borrow();
   void giveBack();
 }
-
+// step 5
 mixin Renewable {
   int renewals = 0;
   bool renew(int limit) {
@@ -49,7 +49,7 @@ mixin Renewable {
     return true;
   }
 }
-
+// step 6
 enum MemberType {
   student(3, 50),
   faculty(10, 20),
@@ -61,7 +61,7 @@ enum MemberType {
 
   int applyDiscount(int fee) => fee - (fee * discountPercent ~/ 100);
 }
-
+// step 7
 extension MoneyText on int {
   String get rs => 'Rs $this';
 }
@@ -72,6 +72,23 @@ extension Initials on String {
 
 extension ShelfMath on List<LibraryItem> {
   int totalLateFee(int days) => fold(0, (sum, i) => sum + i.lateFee(days));
+}
+// step 8
+class Fine {
+  final int amount;
+  const Fine(this.amount);
+
+  Fine operator +(Fine o) => Fine(amount + o.amount);
+  bool operator >(Fine o) => amount > o.amount;
+
+  @override
+  bool operator ==(Object other) => other is Fine && other.amount == amount;
+
+  @override
+  int get hashCode => amount.hashCode;
+
+  @override
+  String toString() => 'Fine($amount)';
 }
 
 class Book extends LibraryItem with Renewable implements Borrowable {
@@ -209,9 +226,16 @@ print('Step 7: ${discounted.rs}');
 print('Step 7: initials of "${titles[u]}" = ${titles[u].initials}');
 print('Step 7: shelf fee for $daysLate days = ${shelf.totalLateFee(daysLate).rs}');
 
-
-
 }
-void step8() { print('--- Step 8 ---'); }
+void step8() {
+ print('--- Step 8 ---');
+
+Fine f1 = Fine(mainBook().lateFee(daysLate));
+Fine f2 = Fine(mainMagazine().lateFee(daysLate));
+print('Step 8: $f1 + $f2 = ${f1 + f2}');
+print('Step 8: first bigger? ${f1 > f2}');
+print('Step 8: equal copies? ${f1 == Fine(f1.amount)}');
+print('Step 8: set size = ${{f1, Fine(f1.amount), f2}.length}');
+}
 void step9() { print('--- Step 9 ---'); }
 void step10() { print('--- Step 10 ---'); }

@@ -28,7 +28,14 @@ final int shelfSize = 3 + u % 4;             // items on the shelf in Steps 9-10
 abstract class LibraryItem {
   final String title;
   final int year;
-  LibraryItem(this.title, this.year);
+// step 9 static constructor
+
+ static int created = 0;
+static int capFee(int fee) => fee > feeCap ? feeCap : fee;
+
+LibraryItem(this.title, this.year) {
+  created++;
+}
 
  int lateFee(int days);
 
@@ -122,11 +129,6 @@ class Magazine extends LibraryItem {
 int lateFee(int days) => days * (feePerDay ~/ 2);
 }
 
-Magazine mainMagazine() {
-  int i = (u + 1) % 10;
-  return Magazine(titles[i], yearOf(i), 1 + (t + u) % 12);
-}
-
 class Dvd extends LibraryItem with Renewable {
   final int minutes;
   Dvd(super.title, super.year, this.minutes);
@@ -138,12 +140,34 @@ class Dvd extends LibraryItem with Renewable {
   int lateFee(int days) => days * feePerDay * 2;
 }
 
+
+// helper functions
+Book mainBook() => Book(titles[u], yearOf(u), 100 + 3 * seed);
+
+Magazine mainMagazine() {
+  int i = (u + 1) % 10;
+  return Magazine(titles[i], yearOf(i), 1 + (t + u) % 12);
+}
+
 Dvd mainDvd() {
   int i = (u + 2) % 10;
   return Dvd(titles[i], yearOf(i), 90 + seed % 40);
 }
 
-Book mainBook() => Book(titles[u], yearOf(u), 100 + 3 * seed);
+List<LibraryItem> buildShelf() {
+  List<LibraryItem> shelf = [];
+  for (int k = 0; k < shelfSize; k++) {
+    int i = (u + k) % 10;
+    if (k % 3 == 0) {
+      shelf.add(Book(titles[i], yearOf(i), 100 + 3 * seed));
+    } else if (k % 3 == 1) {
+      shelf.add(Magazine(titles[i], yearOf(i), 1 + (t + k) % 12));
+    } else {
+      shelf.add(Dvd(titles[i], yearOf(i), 90 + seed % 40));
+    }
+  }
+  return shelf;
+}
 
 void main() {
   print('Seed: $seed (t=$t, u=$u)');
@@ -237,5 +261,16 @@ print('Step 8: first bigger? ${f1 > f2}');
 print('Step 8: equal copies? ${f1 == Fine(f1.amount)}');
 print('Step 8: set size = ${{f1, Fine(f1.amount), f2}.length}');
 }
-void step9() { print('--- Step 9 ---'); }
+void step9() {
+ print('--- Step 9 ---');
+
+LibraryItem.created = 0;
+buildShelf();
+List<LibraryItem> shelf = buildShelf();
+print('Step 9: items created = ${LibraryItem.created}');
+print('Step 9: capped fee = ${LibraryItem.capFee(shelf.first.lateFee(daysBig))} (cap $feeCap)');
+print('Step 9: const copies identical? ${identical(const Fine(10), const Fine(10))}');
+print('Step 9: new copies identical? ${identical(Fine(10), Fine(10))}');
+
+}
 void step10() { print('--- Step 10 ---'); }

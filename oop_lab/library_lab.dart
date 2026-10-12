@@ -35,7 +35,13 @@ abstract class LibraryItem {
  String describe() => '$title ($year)';
 }
 
-class Book extends LibraryItem {
+abstract class Borrowable {
+  bool get isAvailable;
+  void borrow();
+  void giveBack();
+}
+
+class Book extends LibraryItem implements Borrowable {
   final int pages;
   Book(super.title, super.year, this.pages);
 
@@ -44,6 +50,15 @@ String describe() => '${super.describe()}, $pages pages';
 
  @override
 int lateFee(int days) => days * feePerDay;
+
+ bool _out = false;
+
+@override
+bool get isAvailable => !_out;
+@override
+void borrow() => _out = true;
+@override
+void giveBack() => _out = false;
 }
 
 class Magazine extends LibraryItem {
@@ -116,7 +131,21 @@ print('Step 3: Magazine late fee for $daysLate days = ${mainMagazine().lateFee(d
 print('Step 3: Dvd late fee for $daysLate days = ${mainDvd().lateFee(daysLate)}');
 
 }
-void step4() { print('--- Step 4 ---'); }
+void step4() {
+ print('--- Step 4 ---');
+Book book = mainBook();
+print('Step 4: available? ${book.isAvailable}');
+book.borrow();
+print('Step 4: after borrow? ${book.isAvailable}');
+book.giveBack();
+print('Step 4: after return? ${book.isAvailable}');
+
+List<LibraryItem> items = [book, mainMagazine(), mainDvd()];
+for (LibraryItem item in items) {
+  print('Step 4: ${item.runtimeType} borrowable? ${item is Borrowable}');
+}
+
+}
 void step5() { print('--- Step 5 ---'); }
 void step6() { print('--- Step 6 ---'); }
 void step7() { print('--- Step 7 ---'); }

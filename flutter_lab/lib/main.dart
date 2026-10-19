@@ -29,6 +29,16 @@ final List<String> lifecycleLog = <String>[];
 
 void main() => runApp(const LabApp());
 
+   // Stateless: LabApp only builds the fixed app shell.
+   // Stateless: HomePage only arranges the screen, nothing changes inside it.
+   // Stateless: StudentCard only shows the data it was given.
+   // Stateless: GoalBanner only displays the count passed in.
+   // Stateful: Tally holds the changing count in its State.
+   // Stateful: BuggyCounter holds the changing click count.
+   // Stateful: Countdown holds the changing seconds and the timer.
+
+
+
 // Keep the name LabApp and its const constructor: the checker uses them.
 class LabApp extends StatelessWidget {
   const LabApp({super.key});
@@ -44,40 +54,40 @@ Widget build(BuildContext context) {
 
 // Think: LabApp > MaterialApp > HomePage > Scaffold > SingleChildScrollView > Column > Row > Text('Max')
 // Counting LabApp as level 1, Text('Max: ..') is 8 levels deep.
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+   class HomePage extends StatelessWidget {
+     const HomePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Study Tracker: $course')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            StudentCard(name: studentName, roll: rollNo, course: course),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Start: $startCount', key: const Key('info-start')),
-                Text('Step: $stepSize', key: const Key('info-step')),
-                Text('Max: $maxCount', key: const Key('info-max')),
-              ],
-            ),
-            const SizedBox(height: 12),
-            const Tally(),
-            const SizedBox(height: 12),
-const Countdown(),
-            const SizedBox(height: 12),
-            const BuggyCounter(),
-          ],
-        ),
-      ),
-    );
-  }
-}
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(title: Text('Study Tracker: $course')),
+         body: SingleChildScrollView(
+           padding: const EdgeInsets.all(16),
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               StudentCard(name: studentName, roll: rollNo, course: course),
+               const SizedBox(height: 12),
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Text('Start: $startCount', key: const Key('info-start')),
+                   Text('Step: $stepSize', key: const Key('info-step')),
+                   Text('Max: $maxCount', key: const Key('info-max')),
+                 ],
+               ),
+               const SizedBox(height: 12),
+               const Tally(),
+               const SizedBox(height: 12),
+               const Countdown(),
+               const SizedBox(height: 12),
+               const BuggyCounter(),
+             ],
+           ),
+         ),
+       );
+     }
+   }
 
 //  Fields are final because a widget is immutable. Flutter can recreate it at any time,
 // so its data must never change. Without final the compiler complains that a const constructor

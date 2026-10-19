@@ -44,14 +44,11 @@ Widget build(BuildContext context) {
 
 // Think: LabApp > MaterialApp > HomePage > Scaffold > SingleChildScrollView > Column > Row > Text('Max')
 // Counting LabApp as level 1, Text('Max: ..') is 8 levels deep.
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // runApp receives the ROOT widget of the whole app (LabApp).
-    // MaterialApp's home receives only the FIRST SCREEN (HomePage) shown inside the app.
     return Scaffold(
       appBar: AppBar(title: Text('Study Tracker: $course')),
       body: SingleChildScrollView(
@@ -69,6 +66,8 @@ class HomePage extends StatelessWidget {
                 Text('Max: $maxCount', key: const Key('info-max')),
               ],
             ),
+            const SizedBox(height: 12),
+            GoalBanner(count: startCount, max: maxCount),
           ],
         ),
       ),
@@ -107,6 +106,22 @@ class StudentCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class GoalBanner extends StatelessWidget {
+  final int count;
+  final int max;
+
+  const GoalBanner({super.key, required this.count, required this.max});
+
+  @override
+  Widget build(BuildContext context) {
+    // Think: GoalBanner is stateless, it only displays what it is given, so nothing to update.
+    // To show a new count, its parent must rebuild it with a new count (parent calls setState).
+    final percent = count * 100 ~/ max;
+    return Text('Progress: $count of $max ($percent%)',
+        key: const Key('progress'));
   }
 }
 

@@ -51,7 +51,41 @@ class HomePage extends StatelessWidget {
     // MaterialApp  home receives only the FIRST SCREEN (HomePage) shown inside the app.
     return Scaffold(
       appBar: AppBar(title: Text('Study Tracker: $course')),
-      body: const Center(child: Text('Hello')),
+    body: StudentCard(name: studentName, roll: rollNo, course: course),
+    );
+  }
+}
+
+//  Fields are final because a widget is immutable. Flutter can recreate it at any time,
+// so its data must never change. Without final the compiler complains that a const constructor
+// can't be used with non-final fields.
+class StudentCard extends StatelessWidget {
+  final String name;
+  final String roll;
+  final String course;
+
+// constructor
+  const StudentCard({
+    super.key,
+    required this.name,
+    required this.roll,
+    required this.course,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Name: $name', key: const Key('student-name')),
+            Text('Roll no: $roll', key: const Key('student-roll')),
+            Text('Course: $course', key: const Key('student-course')),
+          ],
+        ),
+      ),
     );
   }
 }

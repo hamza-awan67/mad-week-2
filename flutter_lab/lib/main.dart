@@ -42,16 +42,36 @@ Widget build(BuildContext context) {
 }
 }
 
+// Think: LabApp > MaterialApp > HomePage > Scaffold > SingleChildScrollView > Column > Row > Text('Max')
+// Counting LabApp as level 1, Text('Max: ..') is 8 levels deep.
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //  runApp receives the ROOT widget of the whole app (LabApp).
-    // MaterialApp  home receives only the FIRST SCREEN (HomePage) shown inside the app.
+    // runApp receives the ROOT widget of the whole app (LabApp).
+    // MaterialApp's home receives only the FIRST SCREEN (HomePage) shown inside the app.
     return Scaffold(
       appBar: AppBar(title: Text('Study Tracker: $course')),
-    body: StudentCard(name: studentName, roll: rollNo, course: course),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StudentCard(name: studentName, roll: rollNo, course: course),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Start: $startCount', key: const Key('info-start')),
+                Text('Step: $stepSize', key: const Key('info-step')),
+                Text('Max: $maxCount', key: const Key('info-max')),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

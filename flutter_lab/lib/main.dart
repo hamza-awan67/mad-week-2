@@ -66,8 +66,10 @@ class HomePage extends StatelessWidget {
                 Text('Max: $maxCount', key: const Key('info-max')),
               ],
             ),
-          const SizedBox(height: 12),
-const Tally(),
+            const SizedBox(height: 12),
+            const Tally(),
+            const SizedBox(height: 12),
+            const BuggyCounter(),
           ],
         ),
       ),
@@ -211,9 +213,11 @@ class _BuggyCounterState extends State<BuggyCounter> {
         const SizedBox(width: 12),
         ElevatedButton(
           key: const Key('bug-button'),
-          onPressed: () {
-            _clicks += bugStep;
-          },
+            onPressed: () {
+     setState(() {
+       _clicks += bugStep;
+     });
+   },
           child: Text('+$bugStep'),
         ),
       ],

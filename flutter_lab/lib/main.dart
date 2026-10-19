@@ -206,31 +206,40 @@ class Countdown extends StatefulWidget {
 class _CountdownState extends State<Countdown> {
   late int _left;
   late Timer _timer;
+  int _builds = 0;
 
   @override
   void initState() {
     super.initState();
+    lifecycleLog.add('initState');
     _left = startSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _left--);
-      if (_left <= 0) timer.cancel(); // stop at zero
+      if (_left <= 0) timer.cancel();
     });
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    lifecycleLog.add('dispose');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Think: Without _timer.cancel() the timer keeps firing after the widget is removed and calls
-    // setState on a dead State: "setState() called after dispose()" (plus a memory leak).
-    if (_left > 0) {
-      return Text('Time left: $_left s', key: const Key('time-left'));
-    }
-    return const Text('Time is up!', key: Key('time-left'));
+    _builds++;
+    // Think: One setState per tick = one build per tick, so +1 per second, not +2.
+    // To prove dispose ran, print(lifecycleLog) inside dispose() and read the console.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _left > 0
+            ? Text('Time left: $_left s', key: const Key('time-left'))
+            : const Text('Time is up!', key: Key('time-left')),
+        Text('Builds: $_builds', key: const Key('builds')),
+      ],
+    );
   }
 }
 

@@ -136,12 +136,28 @@ class _TallyState extends State<Tally> {
   // Think: The widget (Tally) is an immutable configuration Flutter may recreate often.
   // The State object (_TallyState) is the long-lived memory that survives rebuilds and holds _count.
   int _count = startCount;
+void _plus() {
+  setState(() {
+    _count += stepSize;
+    if (_count > maxCount) _count = maxCount;
+  });
+}
 
-  void _plus() {
-    setState(() {
-      _count += stepSize;
-    });
-  }
+void _minus() {
+  setState(() {
+    _count -= stepSize;
+    if (_count < 0) _count = 0;
+  });
+}
+
+void _reset() {
+  setState(() {
+    _count = startCount;
+  });
+}
+
+//  Hot reload keeps the State, so the count stays 12 (only the code is swapped in).
+// Hot restart destroys widgets AND State, so _count goes back to startCount (8).
 
   @override
   Widget build(BuildContext context) {
@@ -150,15 +166,27 @@ class _TallyState extends State<Tally> {
       children: [
         Text('Count: $_count', key: const Key('count')),
         GoalBanner(count: _count, max: maxCount),
-        Row(
-          children: [
-            ElevatedButton(
-              key: const Key('plus'),
-              onPressed: _plus,
-              child: Text('+$stepSize'),
-            ),
-          ],
-        ),
+      Row(
+  children: [
+    ElevatedButton(
+      key: const Key('plus'),
+      onPressed: _plus,
+      child: Text('+$stepSize'),
+    ),
+    const SizedBox(width: 8),
+    ElevatedButton(
+      key: const Key('minus'),
+      onPressed: _minus,
+      child: Text('-$stepSize'),
+    ),
+    const SizedBox(width: 8),
+    OutlinedButton(
+      key: const Key('reset'),
+      onPressed: _reset,
+      child: const Text('Reset'),
+    ),
+  ],
+),
       ],
     );
   }

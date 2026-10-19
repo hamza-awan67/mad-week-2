@@ -33,13 +33,25 @@ void main() => runApp(const LabApp());
 class LabApp extends StatelessWidget {
   const LabApp({super.key});
 
+ @override
+Widget build(BuildContext context) {
+  return const MaterialApp(
+    title: 'Study Tracker',
+    home: HomePage(),
+  );
+}
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // Step 1 replaces everything below.
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Setup OK: seed $seed (t=$t, u=$u)')),
-      ),
+    //  runApp receives the ROOT widget of the whole app (LabApp).
+    // MaterialApp  home receives only the FIRST SCREEN (HomePage) shown inside the app.
+    return Scaffold(
+      appBar: AppBar(title: Text('Study Tracker: $course')),
+      body: const Center(child: Text('Hello')),
     );
   }
 }

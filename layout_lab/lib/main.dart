@@ -187,11 +187,22 @@ void dispose() {
   super.dispose();
 }
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'Session: $_seconds s',
-      key: const Key('clock'),
-    );
-  }
+@override
+Widget build(BuildContext context) {
+  _builds++;
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Session: $_seconds s',
+        key: const Key('clock'),
+      ),
+      Text(
+        'Builds: $_builds',
+        key: const Key('builds'),
+      ),
+    ],
+  );
+}
 }

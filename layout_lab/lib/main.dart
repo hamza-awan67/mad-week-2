@@ -163,10 +163,13 @@ class Clock extends StatefulWidget {
 class _ClockState extends State<Clock> {
   late Timer _timer;
   int _seconds = startSec;
+  int _builds = 0;
 
   @override
   void initState() {
     super.initState();
+
+    lifecycleLog.add('initState');
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _seconds += tick);
@@ -176,6 +179,13 @@ class _ClockState extends State<Clock> {
       }
     });
   }
+
+  @override
+void dispose() {
+  _timer.cancel();
+  lifecycleLog.add('dispose');
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {

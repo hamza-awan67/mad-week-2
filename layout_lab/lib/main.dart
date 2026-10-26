@@ -106,6 +106,8 @@ class HomePage extends StatelessWidget {
     const SwapBoard(),
     const SizedBox(height: 12),
 const InfoPanel(),
+const SizedBox(height: 12),
+const SummaryRow(),
           ],
         ),
       ),
@@ -354,3 +356,35 @@ class InfoPanel extends StatelessWidget {
     );
   }
 }
+// // Constraints go down from Row to Expanded and then Text. The available width makes each Text wrap onto multiple lines.
+
+class SummaryRow extends StatelessWidget {
+  const SummaryRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'Part A: read the widget tree of the $course board from top to bottom.',
+            key: const Key('sum-a'),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Part B: build each box from small widgets and never extend a built-in class.',
+            key: const Key('sum-b'),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Part C: break the layout on purpose, then fix it with Expanded or Wrap.',
+            key: const Key('sum-c'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
